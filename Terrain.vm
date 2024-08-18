@@ -1,0 +1,74 @@
+function Terrain.new 0
+push constant 1
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+push argument 0
+push constant 2
+call Math.divide 2
+push argument 0
+push constant 3
+call Math.divide 2
+call WichmannHill.new 3
+pop this 0
+push pointer 0
+return
+function Terrain.draw 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push this 0
+call WichmannHill.next 1
+pop local 1
+push this 0
+call WichmannHill.next 1
+pop local 2
+push constant 0
+call Screen.setColor 1
+pop temp 0
+label WHILE_EXP0
+push local 0
+push constant 32
+lt
+not
+if-goto WHILE_END0
+push local 0
+push constant 16
+call Math.multiply 2
+push constant 78
+push local 1
+add
+push local 0
+push constant 1
+add
+push constant 16
+call Math.multiply 2
+push constant 1
+sub
+push constant 78
+push local 2
+add
+call Screen.drawLine 4
+pop temp 0
+push local 2
+pop local 1
+push this 0
+call WichmannHill.next 1
+pop local 2
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Terrain.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

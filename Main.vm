@@ -1,34 +1,8 @@
-function Main.main 2
-push constant 0
-pop local 1
-push constant 165
-push constant 200
-push constant 1099
-call WichmannHill.new 3
+function Main.main 1
+call LunarGame.new 0
 pop local 0
-label WHILE_EXP0
-push local 1
-push constant 100
-lt
-not
-if-goto WHILE_END0
 push local 0
-call WichmannHill.next 1
-call Output.printInt 1
+call LunarGame.run 1
 pop temp 0
-push constant 2
-call String.new 1
-push constant 44
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push local 1
-push constant 1
-add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
 push constant 0
 return

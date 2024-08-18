@@ -22,19 +22,13 @@ class WichmannHill {
     var int r;          // result
 
     let x1 = (WichmannHill.mod(s1, 177) * 171) - ((s1 / 177) * 2);
-    if (x1 < 0) {
-      let x1 = x1 + 30269;
-    }
+    if (x1 < 0) { let x1 = x1 + 30269; }
 
     let x2 = (WichmannHill.mod(s2, 176) * 172) - ((s2 / 176) * 35);
-    if (x2 < 0) {
-      let x2 = x2 + 30307;
-    }
+    if (x2 < 0) { let x2 = x2 + 30307; }
 
     let x3 = (WichmannHill.mod(s3, 178) * 170) - ((s3 / 178) * 63);
-    if (x3 < 0) {
-      let x3 = x3 + 30323;
-    }
+    if (x3 < 0) { let x3 = x3 + 30323; }
 
     // update the seed values
     let s1 = x1;

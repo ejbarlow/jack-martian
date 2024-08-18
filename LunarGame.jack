@@ -1,0 +1,32 @@
+class LunarGame {
+  field Terrain t;
+
+  constructor LunarGame new() {
+    return this;
+  }
+
+  method void dispose() {
+    do t.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+
+  method void run() {
+    var char key;
+    var int seed;
+
+    do Output.printString("Press any key...");
+
+    while (key = 0) {
+      let key = Keyboard.keyPressed();
+      let seed = seed + 1;
+      if (seed > 30000) { let seed = 0 ;}
+    }
+    let t = Terrain.new(seed);
+    do Screen.clearScreen();
+    do Screen.setColor(true);
+    do Screen.drawRectangle(0, 0, 511, 255);
+    do t.draw();
+    return;
+  }
+}
