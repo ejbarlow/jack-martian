@@ -1,0 +1,14 @@
+class Main {
+  function void main() {
+    var WichmannHill rng;
+    var int i;
+    let i = 0;
+    let rng = WichmannHill.new(165, 200, 1099);
+    while (i < 100) {
+      do Output.printInt(rng.next());
+      do Output.printString(", ");
+      let i = i + 1;
+    }
+    return;
+  }
+}

@@ -1,0 +1,70 @@
+/**
+ * Simple seeded pseudorandom number generator class based
+ * on Wichmann-Hill.
+ * (https://en.wikipedia.org/wiki/Wichmann–Hill)
+ */
+
+class WichmannHill {
+
+  field int s1, s2, s3;  // 3 seeds (range 1-30000)
+
+  /** Initialise a new generator with given seeds) */
+  constructor WichmannHill new(int seed1, int seed2, int seed3) {
+    let s1 = seed1;
+    let s2 = seed2;
+    let s3 = seed3;
+    return this;
+  }
+
+  /** Get the next random value */
+  method int next() {
+    var int x1, x2, x3; // intermediate calculations
+    var int r;          // result
+
+    let x1 = (WichmannHill.mod(s1, 177) * 171) - ((s1 / 177) * 2);
+    if (x1 < 0) {
+      let x1 = x1 + 30269;
+    }
+
+    let x2 = (WichmannHill.mod(s2, 176) * 172) - ((s2 / 176) * 35);
+    if (x2 < 0) {
+      let x2 = x2 + 30307;
+    }
+
+    let x3 = (WichmannHill.mod(s3, 178) * 170) - ((s3 / 178) * 63);
+    if (x3 < 0) {
+      let x3 = x3 + 30323;
+    }
+
+    // update the seed values
+    let s1 = x1;
+    let s2 = x2;
+    let s3 = x3;
+
+    // combine the three products
+    let x1 = x1 / 3;
+    let x2 = x2 / 3;
+    let x3 = x3 / 3;
+    let r = x1 + x2 + x3;
+
+    // return between 0 and 99
+    let r = WichmannHill.mod(r, 100);
+    return r;
+  }
+
+  /** Modulo function */
+  function int mod(int x, int y) {
+    var int count;
+    let count = x;
+    while (count - y > -1) {
+      let count = count - y;
+    }
+    return count;
+  }
+
+  /** Standard dispose */
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+}
