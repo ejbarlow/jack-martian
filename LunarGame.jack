@@ -1,5 +1,6 @@
 class LunarGame {
   field Terrain t;
+  field Ship s;
 
   constructor LunarGame new() {
     return this;
@@ -7,6 +8,7 @@ class LunarGame {
 
   method void dispose() {
     do t.dispose();
+    do s.dispose();
     do Memory.deAlloc(this);
     return;
   }
@@ -23,10 +25,24 @@ class LunarGame {
       if (seed > 30000) { let seed = 0 ;}
     }
     let t = Terrain.new(seed);
+    let s = Ship.new();
     do Screen.clearScreen();
     do Screen.setColor(true);
     do Screen.drawRectangle(0, 0, 511, 255);
     do t.draw();
+
+    while (true) {
+      do loop();
+    }
+    
+    return;
+  }
+
+  method void loop() {
+    do s.draw(true);
+    do s.update();
+    do s.draw(false);
+    do Sys.wait(17);
     return;
   }
 }

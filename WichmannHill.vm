@@ -1,5 +1,5 @@
 function WichmannHill.new 0
-push constant 3
+push constant 4
 call Memory.alloc 1
 pop pointer 0
 push argument 0
@@ -8,6 +8,8 @@ push argument 1
 pop this 1
 push argument 2
 pop this 2
+push constant 101
+pop this 3
 push pointer 0
 return
 function WichmannHill.next 4
@@ -107,10 +109,17 @@ push local 2
 add
 pop local 3
 push local 3
-push constant 100
+push this 3
 call WichmannHill.mod 2
 pop local 3
 push local 3
+return
+function WichmannHill.setMax 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 3
+push constant 0
 return
 function WichmannHill.mod 1
 push argument 0

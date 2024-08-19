@@ -1,7 +1,11 @@
 class Terrain {
   field WichmannHill rng;
+  field int baseHt;
+
   constructor Terrain new(int seed) {
     let rng = WichmannHill.new(seed, seed / 2, seed / 3);
+    let baseHt = 200;
+    do rng.setMax(50);
     return this;
   }
 
@@ -11,8 +15,8 @@ class Terrain {
     let y1 = rng.next();
     let y2 = rng.next();
     do Screen.setColor(false);
-    while (i < 32) {
-      do Screen.drawLine(i * 16, 78 + y1, ((i + 1) * 16) - 1, 78 + y2);
+    while (i < 16) {
+      do Screen.drawLine(i * 32, baseHt - y1, ((i + 1) * 32) - 1, baseHt - y2);
       let y1 = y2;
       let y2 = rng.next();
       let i = i + 1;
