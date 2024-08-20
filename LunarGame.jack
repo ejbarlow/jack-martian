@@ -42,7 +42,7 @@ class LunarGame {
     do s.draw(true);
     do s.update();
     do s.draw(false);
-    do Sys.wait(17);
+    do Sys.wait(33);
     return;
   }
 }

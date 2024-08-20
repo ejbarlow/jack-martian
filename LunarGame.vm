@@ -127,7 +127,7 @@ push this 1
 push constant 0
 call Ship.draw 2
 pop temp 0
-push constant 17
+push constant 33
 call Sys.wait 1
 pop temp 0
 push constant 0
