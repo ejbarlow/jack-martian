@@ -49,16 +49,19 @@ class LunarGame {
   }
 
   method void loop(char keyCode) {
-    do s.draw(true);
+    do Screen.clearScreen();
+    do Screen.setColor(true);
+    do Screen.drawRectangle(0, 0, 511, 255);
+    do t.draw();
     do s.update(keyCode);
     if (s.getHitFlag() = true) {
       do s.reset();
-      do Screen.clearScreen();
-      do Screen.setColor(true);
-      do Screen.drawRectangle(0, 0, 511, 255);
-      do t.draw();
+      do t.newHeights();
     } else {
+      do t.drawLandings();
       do s.draw(false);
+      do Output.moveCursor(0, 0);
+      do Output.printInt(s.getVY());
     }
     do Sys.wait(100);
     return;

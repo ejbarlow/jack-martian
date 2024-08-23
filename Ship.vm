@@ -1,5 +1,5 @@
 function Ship.new 1
-push constant 10
+push constant 12
 call Memory.alloc 1
 pop pointer 0
 push constant 256
@@ -59,11 +59,11 @@ goto WHILE_EXP0
 label WHILE_END0
 push pointer 0
 return
-function Ship.update 1
+function Ship.update 0
 push argument 0
 pop pointer 0
 push constant 0
-pop local 0
+pop this 10
 push argument 1
 push constant 131
 eq
@@ -71,7 +71,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 2
-pop local 0
+pop this 10
 push this 3
 push this 6
 sub
@@ -110,7 +110,7 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 1
-pop local 0
+pop this 10
 push this 2
 push this 6
 sub
@@ -135,7 +135,7 @@ if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
 push constant 3
-pop local 0
+pop this 10
 push this 2
 push this 6
 add
@@ -192,18 +192,67 @@ call Ship.hitTest 1
 pop temp 0
 push constant 0
 return
-function Ship.drawThrust 0
+function Ship.drawThrust 3
 push argument 0
 pop pointer 0
+push this 0
+pop local 0
+push this 1
+pop local 1
+push this 11
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 13
+pop local 2
+goto IF_END0
+label IF_FALSE0
+push constant 10
+pop local 2
+label IF_END0
+push this 11
+not
+pop this 11
+push this 10
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+push local 2
+add
+pop local 0
+label IF_FALSE1
+push this 10
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 1
+push local 2
+add
+pop local 1
+label IF_FALSE2
+push this 10
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 0
+push local 2
+sub
+pop local 0
+label IF_FALSE3
 push constant 0
 call Screen.setColor 1
 pop temp 0
 push this 0
 push this 1
-push this 0
-push this 1
-push constant 10
-add
+push local 0
+push local 1
 call Screen.drawLine 4
 pop temp 0
 push constant 0
@@ -272,7 +321,57 @@ add
 pop local 0
 goto WHILE_EXP0
 label WHILE_END0
+push this 1
+push constant 194
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+push constant 64
+gt
+push this 0
+and
+push constant 96
+lt
+push this 0
+push constant 416
+gt
+push this 0
+and
+push constant 448
+lt
+or
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 3
+push constant 50
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push constant 0
+not
+pop this 9
+push constant 0
+not
+return
+goto IF_END3
+label IF_FALSE3
+push constant 0
+pop this 3
+push constant 194
+pop this 1
+label IF_END3
+label IF_FALSE2
+label IF_FALSE1
+push constant 0
+return
+function Ship.getVY 0
+push argument 0
+pop pointer 0
+push this 3
 return
 function Ship.getPixel 4
 push argument 0
@@ -336,6 +435,17 @@ push constant 2
 call Math.divide 2
 call Screen.drawCircle 3
 pop temp 0
+push this 10
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push this 10
+call Ship.drawThrust 2
+pop temp 0
+label IF_FALSE0
 push constant 0
 return
 function Ship.dispose 0

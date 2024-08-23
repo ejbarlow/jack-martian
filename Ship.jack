@@ -8,6 +8,8 @@ class Ship {
   field int friction;   // horizontal friction strength
   field Array bitMask;  // for checking screen px for hit detection
   field bool hitFlag;
+  field int thrustDir;
+  field bool thrustLen;
 
   constructor Ship new() {
     var int i;
@@ -32,7 +34,6 @@ class Ship {
   }
 
   method void update(char key) {
-    var int thrustDir;
     let thrustDir = 0;
     if (key = 131) {
       let thrustDir = 2;
@@ -67,16 +68,25 @@ class Ship {
 
     do hitTest();
 
-    // if (thrustDir > 0) {
-      // do drawThrust(thrustDir);
-    // }
-
     return;
   }
 
   method void drawThrust(int dir) {
+    var int tX, tY;
+    var int len;
+    let tX = x;
+    let tY = y;
+    if (thrustLen) {
+      let len = 13;
+    } else {
+      let len = 10;
+    }
+    let thrustLen = ~thrustLen;
+    if (thrustDir = 1) { let tX = x + len; }
+    if (thrustDir = 2) { let tY = y + len; }
+    if (thrustDir = 3) { let tX = x - len; }
     do Screen.setColor(false);
-    do Screen.drawLine(x, y, x, y + 10);
+    do Screen.drawLine(x, y, tX, tY);
     return;
   }
 
@@ -102,7 +112,22 @@ class Ship {
       }
       let x1 = x1 + 1;
     }
+    if (y > 194) {
+      if ((x > 64 & x < 96) | (x > 416 & x < 448)) {
+        if (vY > 50) {
+          let hitFlag = true;
+          return true;
+        } else {
+          let vY = 0;
+          let y = 194;
+        }
+      }
+    }
     return false;
+  }
+
+  method int getVY() {
+    return vY;
   }
 
   method bool getPixel(int pX, int pY) {
@@ -125,8 +150,11 @@ class Ship {
 
   method void draw(bool col) {
     do Screen.setColor(col);
-    // do Screen.drawRectangle(x - (size/2), y - (size/2), x + (size/2), y + (size/2));
     do Screen.drawCircle(x, y, size/2);
+
+    if (thrustDir > 0) {
+      do drawThrust(thrustDir);
+    }
     return;
   }
 

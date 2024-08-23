@@ -137,10 +137,20 @@ return
 function LunarGame.loop 0
 push argument 0
 pop pointer 0
-push this 1
+call Screen.clearScreen 0
+pop temp 0
 push constant 0
 not
-call Ship.draw 2
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 0
+push constant 511
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+call Terrain.draw 1
 pop temp 0
 push this 1
 push argument 1
@@ -157,26 +167,25 @@ label IF_TRUE0
 push this 1
 call Ship.reset 1
 pop temp 0
-call Screen.clearScreen 0
-pop temp 0
-push constant 0
-not
-call Screen.setColor 1
-pop temp 0
-push constant 0
-push constant 0
-push constant 511
-push constant 255
-call Screen.drawRectangle 4
-pop temp 0
 push this 0
-call Terrain.draw 1
+call Terrain.newHeights 1
 pop temp 0
 goto IF_END0
 label IF_FALSE0
+push this 0
+call Terrain.drawLandings 1
+pop temp 0
 push this 1
 push constant 0
 call Ship.draw 2
+pop temp 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push this 1
+call Ship.getVY 1
+call Output.printInt 1
 pop temp 0
 label IF_END0
 push constant 100
