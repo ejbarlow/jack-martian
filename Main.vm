@@ -2,7 +2,13 @@ function Main.main 1
 call LunarGame.new 0
 pop local 0
 push local 0
+call LunarGame.init 1
+pop temp 0
+push local 0
 call LunarGame.run 1
+pop temp 0
+push local 0
+call LunarGame.dispose 1
 pop temp 0
 push constant 0
 return

@@ -2,7 +2,9 @@ class Main {
   function void main() {
     var LunarGame game;
     let game = LunarGame.new();
+    do game.init();
     do game.run();
+    do game.dispose();
     return;
   }
 }

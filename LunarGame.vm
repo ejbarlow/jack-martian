@@ -1,7 +1,9 @@
 function LunarGame.new 0
-push constant 2
+push constant 3
 call Memory.alloc 1
 pop pointer 0
+push constant 0
+pop this 2
 push pointer 0
 return
 function LunarGame.dispose 0
@@ -18,7 +20,7 @@ call Memory.deAlloc 1
 pop temp 0
 push constant 0
 return
-function LunarGame.run 2
+function LunarGame.init 2
 push argument 0
 pop pointer 0
 push constant 16
@@ -100,16 +102,36 @@ pop temp 0
 push this 0
 call Terrain.draw 1
 pop temp 0
-label WHILE_EXP1
+push constant 0
+return
+function LunarGame.run 1
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push this 2
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 140
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push constant 0
 not
-not
-if-goto WHILE_END1
+pop this 2
+goto IF_END0
+label IF_FALSE0
 push pointer 0
-call LunarGame.loop 1
+push local 0
+call LunarGame.loop 2
 pop temp 0
-goto WHILE_EXP1
-label WHILE_END1
+label IF_END0
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return
 function LunarGame.loop 0
@@ -121,13 +143,43 @@ not
 call Ship.draw 2
 pop temp 0
 push this 1
-call Ship.update 1
+push argument 1
+call Ship.update 2
 pop temp 0
+push this 1
+call Ship.getHitFlag 1
+push constant 0
+not
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 1
+call Ship.reset 1
+pop temp 0
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 0
+push constant 511
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+call Terrain.draw 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
 push this 1
 push constant 0
 call Ship.draw 2
 pop temp 0
-push constant 33
+label IF_END0
+push constant 100
 call Sys.wait 1
 pop temp 0
 push constant 0

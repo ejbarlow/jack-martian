@@ -1,8 +1,10 @@
 class LunarGame {
   field Terrain t;
   field Ship s;
+  field boolean exit;
 
   constructor LunarGame new() {
+    let exit = false;
     return this;
   }
 
@@ -13,7 +15,7 @@ class LunarGame {
     return;
   }
 
-  method void run() {
+  method void init() {
     var char key;
     var int seed;
 
@@ -30,19 +32,35 @@ class LunarGame {
     do Screen.setColor(true);
     do Screen.drawRectangle(0, 0, 511, 255);
     do t.draw();
-
-    while (true) {
-      do loop();
-    }
-    
     return;
   }
 
-  method void loop() {
+  method void run() {
+    var char key;
+    while (~(exit)) {
+      let key = Keyboard.keyPressed();
+      if (key = 140) {
+        let exit = true;
+      } else {
+        do loop(key);
+      }
+    }
+    return;
+  }
+
+  method void loop(char keyCode) {
     do s.draw(true);
-    do s.update();
-    do s.draw(false);
-    do Sys.wait(33);
+    do s.update(keyCode);
+    if (s.getHitFlag() = true) {
+      do s.reset();
+      do Screen.clearScreen();
+      do Screen.setColor(true);
+      do Screen.drawRectangle(0, 0, 511, 255);
+      do t.draw();
+    } else {
+      do s.draw(false);
+    }
+    do Sys.wait(100);
     return;
   }
 }

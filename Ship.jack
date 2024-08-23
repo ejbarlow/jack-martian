@@ -1,13 +1,13 @@
 class Ship {
 
-  field int x, y;
-  field int vX, vY;
-  field int size;
-  field int grav;
-  field int thrust;
-  field int friction;
-  field Array twoTo;
-  field int factor;
+  field int x, y;       // screen position
+  field int vX, vY;     // velocities
+  field int size;       // square width/height
+  field int grav;       // gravity strength
+  field int thrust;     // thrust strength
+  field int friction;   // horizontal friction strength
+  field Array bitMask;  // for checking screen px for hit detection
+  field bool hitFlag;
 
   constructor Ship new() {
     var int i;
@@ -15,58 +15,79 @@ class Ship {
     let x = 256;
     let y = 10;
     let size = 8;
-    let grav = 1;
-    let thrust = 2;
+    let grav = 3;
+    let thrust = 5;
     let friction = 1;
-    let factor = 5;
     let i = 0;
+    let hitFlag = false;
 
-    let twoTo = Array.new(16);
-    let twoTo[0] = 1;
+    let bitMask = Array.new(16);
+    let bitMask[0] = 1;
     while (i < 15) {
-      let twoTo[i+1] = twoTo[i] * 2;
+      let bitMask[i+1] = bitMask[i] * 2;
       let i = i + 1;
     }
 
     return this;
   }
 
-  method void update() {
-    var char key;
-    let key = Keyboard.keyPressed();
+  method void update(char key) {
+    var int thrustDir;
+    let thrustDir = 0;
     if (key = 131) {
+      let thrustDir = 2;
       let vY = vY - thrust;
-      if (vY < -10) { let vY = -10; }
+      if (vY < -100) { let vY = -100; }
     } else {
       let vY = vY + grav;
-      if (vY > 10) { let vY = 10; }
+      if (vY > 100) { let vY = 100; }
     }
 
     if (key = 130) {
+      let thrustDir = 1;
       let vX = vX - thrust;
-      if (vX < -10) { let vX = -10; }
-    }
-    if (key = 132) { 
-      let vX = vX + thrust;
-      if (vX > 10) { let vX = 10; }
-    }
-
-    if(~(key = 130) & ~(key = 132)) {
-      if (vX < 0) {
-        let vX = vX + friction;
-      } 
-      if (vX > 0) {
-        let vX = vX - friction;
+      if (vX < -100) { let vX = -100; }
+    } else {
+      if (key = 132) { 
+        let thrustDir = 3;
+        let vX = vX + thrust;
+        if (vX > 100) { let vX = 100; }
+      } else {
+        if (vX < 0) {
+          let vX = vX + friction;
+        } 
+        if (vX > 0) {
+          let vX = vX - friction;
+        }
       }
     }
 
-    let y = y + (vY/factor);
-    let x = x + (vX/factor);
-    if (hitTest() = true) {
-      // do Sys.error(789);  
-      let y = 10;
-    }
+    let y = y + (vY/20);
+    let x = x + (vX/20);
+
+    do hitTest();
+
+    // if (thrustDir > 0) {
+      // do drawThrust(thrustDir);
+    // }
+
     return;
+  }
+
+  method void drawThrust(int dir) {
+    do Screen.setColor(false);
+    do Screen.drawLine(x, y, x, y + 10);
+    return;
+  }
+
+  method bool getHitFlag() {
+    return hitFlag;
+  }
+
+  method void reset() {
+      let y = 10;
+      let hitFlag = false;
+      return;
   }
 
   method bool hitTest() {
@@ -76,6 +97,7 @@ class Ship {
     let y1 = y + (size/2);
     while (x1 < x2) {
       if (getPixel(x1, y1) = true) {
+        let hitFlag = true;
         return true;
       }
       let x1 = x1 + 1;
@@ -95,7 +117,7 @@ class Ship {
     let word = ~word;
     let m = pX / 16;
     let m = pX - (m*16);
-    if (word & twoTo[m] = 0) {
+    if (word & bitMask[m] = 0) {
       let result = false;
     }
     return result;
@@ -103,7 +125,8 @@ class Ship {
 
   method void draw(bool col) {
     do Screen.setColor(col);
-    do Screen.drawRectangle(x - (size/2), y - (size/2), x + (size/2), y + (size/2));
+    // do Screen.drawRectangle(x - (size/2), y - (size/2), x + (size/2), y + (size/2));
+    do Screen.drawCircle(x, y, size/2);
     return;
   }
 
