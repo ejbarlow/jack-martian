@@ -27,8 +27,7 @@ class LunarGame {
       if (seed > 30000) { let seed = 0 ;}
     }
     let t = Terrain.new(seed);
-    let s = Ship.new();
-    do Screen.clearScreen();
+    let s = Ship.new(t.getStartHeight());
     do Screen.setColor(true);
     do Screen.drawRectangle(0, 0, 511, 255);
     do t.draw();
@@ -58,10 +57,7 @@ class LunarGame {
       do s.reset();
       do t.newHeights();
     } else {
-      do t.drawLandings();
       do s.draw(false);
-      do Output.moveCursor(0, 0);
-      do Output.printInt(s.getVY());
     }
     do Sys.wait(100);
     return;

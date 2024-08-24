@@ -10,18 +10,21 @@ class Ship {
   field bool hitFlag;
   field int thrustDir;
   field bool thrustLen;
+  field WichmannHill rng;
 
-  constructor Ship new() {
+  constructor Ship new(int startY) {
     var int i;
 
-    let x = 256;
-    let y = 10;
+    let x = 80;
+    let y = startY - 4;
     let size = 8;
     let grav = 3;
     let thrust = 5;
     let friction = 1;
     let i = 0;
     let hitFlag = false;
+    let rng = WichmannHill.new(23, 7666, 489);
+    do rng.setMax(2);
 
     let bitMask = Array.new(16);
     let bitMask[0] = 1;
@@ -74,19 +77,32 @@ class Ship {
   method void drawThrust(int dir) {
     var int tX, tY;
     var int len;
+    var int rand;
     let tX = x;
     let tY = y;
     if (thrustLen) {
-      let len = 13;
+      let len = 8;
     } else {
       let len = 10;
     }
     let thrustLen = ~thrustLen;
-    if (thrustDir = 1) { let tX = x + len; }
-    if (thrustDir = 2) { let tY = y + len; }
-    if (thrustDir = 3) { let tX = x - len; }
+    let rand = rng.next();
     do Screen.setColor(false);
-    do Screen.drawLine(x, y, tX, tY);
+    if (thrustDir = 1) {
+      let tX = x + len;
+      do Screen.drawLine(x, y, tX, tY + rand);
+      do Screen.drawLine(x, y, tX, tY - rand);
+    }
+    if (thrustDir = 2) {
+      let tY = y + len;
+      do Screen.drawLine(x, y, tX + rand, tY);
+      do Screen.drawLine(x, y, tX - rand, tY);
+    }
+    if (thrustDir = 3) {
+      let tX = x - len;
+      do Screen.drawLine(x, y, tX, tY + rand);
+      do Screen.drawLine(x, y, tX, tY - rand);
+    }
     return;
   }
 
@@ -107,22 +123,23 @@ class Ship {
     let y1 = y + (size/2);
     while (x1 < x2) {
       if (getPixel(x1, y1) = true) {
-        let hitFlag = true;
-        return true;
-      }
-      let x1 = x1 + 1;
-    }
-    if (y > 194) {
-      if ((x > 64 & x < 96) | (x > 416 & x < 448)) {
-        if (vY > 50) {
+        if (~((x > 64) & (x < 96)) & ~((x > 416) & (x < 448))) {
           let hitFlag = true;
           return true;
         } else {
-          let vY = 0;
-          let y = 194;
+          if (vY > 50) {
+            let hitFlag = true;
+            return true;
+          } else {
+            if (vY > 0) {
+              let vY = 0;
+            }
+          }
         }
       }
+      let x1 = x1 + 1;
     }
+    let hitFlag = false;
     return false;
   }
 

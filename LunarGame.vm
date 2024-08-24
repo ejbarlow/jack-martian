@@ -85,10 +85,10 @@ label WHILE_END0
 push local 1
 call Terrain.new 1
 pop this 0
-call Ship.new 0
+push this 0
+call Terrain.getStartHeight 1
+call Ship.new 1
 pop this 1
-call Screen.clearScreen 0
-pop temp 0
 push constant 0
 not
 call Screen.setColor 1
@@ -172,20 +172,9 @@ call Terrain.newHeights 1
 pop temp 0
 goto IF_END0
 label IF_FALSE0
-push this 0
-call Terrain.drawLandings 1
-pop temp 0
 push this 1
 push constant 0
 call Ship.draw 2
-pop temp 0
-push constant 0
-push constant 0
-call Output.moveCursor 2
-pop temp 0
-push this 1
-call Ship.getVY 1
-call Output.printInt 1
 pop temp 0
 label IF_END0
 push constant 100
