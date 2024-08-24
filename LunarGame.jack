@@ -2,6 +2,7 @@ class LunarGame {
   field Terrain t;
   field Ship s;
   field boolean exit;
+  field int score;
 
   constructor LunarGame new() {
     let exit = false;
@@ -27,7 +28,7 @@ class LunarGame {
       if (seed > 30000) { let seed = 0 ;}
     }
     let t = Terrain.new(seed);
-    let s = Ship.new(t.getStartHeight());
+    let s = Ship.new(t.getStartHeight(), this);
     do Screen.setColor(true);
     do Screen.drawRectangle(0, 0, 511, 255);
     do t.draw();
@@ -47,8 +48,26 @@ class LunarGame {
     return;
   }
 
+  method void score() {
+    var int sX;
+    let sX = s.getX();
+    if (~t.isReturnTrip()) {
+      if ((sX > 64) & (sX < 96)) {
+        do t.newHeights();
+        do s.addFuel(50);
+        let score = score + 1;
+      }
+    } else {
+      if ((sX > 416) & (sX < 448)) {
+        do t.newHeights();
+        do s.addFuel(50);
+        let score = score + 1;
+      }
+    }
+    return;
+  }
+
   method void loop(char keyCode) {
-    do Screen.clearScreen();
     do Screen.setColor(true);
     do Screen.drawRectangle(0, 0, 511, 255);
     do t.draw();
@@ -59,6 +78,12 @@ class LunarGame {
     } else {
       do s.draw(false);
     }
+    do Output.moveCursor(22, 1);
+    do Output.printString("Score: ");
+    do Output.printInt(score);
+    do Output.moveCursor(22, 20);
+    do Output.printString("Fuel: ");
+    do Output.printInt(s.getFuel());
     do Sys.wait(100);
     return;
   }

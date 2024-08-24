@@ -7,12 +7,14 @@ class Ship {
   field int thrust;     // thrust strength
   field int friction;   // horizontal friction strength
   field Array bitMask;  // for checking screen px for hit detection
+  field int fuel;
   field bool hitFlag;
   field int thrustDir;
   field bool thrustLen;
   field WichmannHill rng;
+  field LunarGame game;
 
-  constructor Ship new(int startY) {
+  constructor Ship new(int startY, LunarGame g) {
     var int i;
 
     let x = 80;
@@ -24,6 +26,8 @@ class Ship {
     let i = 0;
     let hitFlag = false;
     let rng = WichmannHill.new(23, 7666, 489);
+    let game = g;
+    let fuel = 200;
     do rng.setMax(2);
 
     let bitMask = Array.new(16);
@@ -39,23 +43,32 @@ class Ship {
   method void update(char key) {
     let thrustDir = 0;
     if (key = 131) {
-      let thrustDir = 2;
-      let vY = vY - thrust;
-      if (vY < -100) { let vY = -100; }
+      if (fuel > 0) {
+        let thrustDir = 2;
+        let vY = vY - thrust;
+        if (vY < -100) { let vY = -100; }
+        let fuel = fuel - 1;
+      }
     } else {
       let vY = vY + grav;
       if (vY > 100) { let vY = 100; }
     }
 
     if (key = 130) {
-      let thrustDir = 1;
-      let vX = vX - thrust;
-      if (vX < -100) { let vX = -100; }
+      if (fuel > 0) {
+        let thrustDir = 1;
+        let vX = vX - thrust;
+        if (vX < -100) { let vX = -100; }
+        let fuel = fuel - 1;
+      }
     } else {
       if (key = 132) { 
-        let thrustDir = 3;
-        let vX = vX + thrust;
-        if (vX > 100) { let vX = 100; }
+        if (fuel > 0) {
+          let thrustDir = 3;
+          let vX = vX + thrust;
+          if (vX > 100) { let vX = 100; }
+          let fuel = fuel - 1;
+        }
       } else {
         if (vX < 0) {
           let vX = vX + friction;
@@ -73,6 +86,17 @@ class Ship {
 
     return;
   }
+
+  method int getFuel() {
+    return fuel;
+  }
+   method void addFuel(int amount) {
+     let fuel = fuel + amount;
+     if (fuel > 200) {
+       let fuel = 200;
+     }
+     return;
+   }
 
   method void drawThrust(int dir) {
     var int tX, tY;
@@ -133,6 +157,7 @@ class Ship {
           } else {
             if (vY > 0) {
               let vY = 0;
+              do game.score();
             }
           }
         }
@@ -145,6 +170,10 @@ class Ship {
 
   method int getVY() {
     return vY;
+  }
+
+  method int getX() {
+    return x;
   }
 
   method bool getPixel(int pX, int pY) {
