@@ -24,17 +24,26 @@ class Terrain {
         if ((n = 3) | (n = 14)) {
           let heights[n] = heights[n - 1];
         } else {
-          let heights[n] = baseHt - rng.next();
-          if (heights[n] < 5) {
-            let heights[n] = 5;
+          if (n > 0) {
+            let heights[n] = heights[n - 1] + 50 - rng.next();
           } else {
-            if (heights[n] > 250) { let heights[n] = 250; }
+            let heights[n] = baseHt - rng.next();
+          }
+          if (heights[n] < 20) {
+            let heights[n] = 20;
+          } else {
+            if (heights[n] > 220) { let heights[n] = 220; }
           }
         }
       }
       let n = n + 1;
     }
     let rtnTrip = ~rtnTrip;
+    return;
+  }
+
+  method void resetTrip() {
+    let rtnTrip = false;
     return;
   }
 
@@ -64,6 +73,19 @@ class Terrain {
     do Screen.drawLine(416, heights[13], 448, heights[13]);
     do Screen.drawLine(416, heights[13] + 10, 448, heights[13]);
     do Screen.drawLine(416, heights[13], 448, heights[13] + 10);
+    return;
+  }
+
+  method void drawFlag() {
+    if (~rtnTrip) {
+      do Screen.drawLine(68, heights[2], 68, heights[2] - 10);
+      do Screen.drawLine(68, heights[2] - 10, 72, heights[2] - 8);
+      do Screen.drawLine(68, heights[2] - 6, 72, heights[2] - 8);
+    } else {
+      do Screen.drawLine(420, heights[13], 420, heights[13] - 10);
+      do Screen.drawLine(420, heights[13] - 10, 424, heights[13] - 8);
+      do Screen.drawLine(420, heights[13] - 6, 424, heights[13] - 8);
+    }
     return;
   }
 

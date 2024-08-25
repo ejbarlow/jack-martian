@@ -108,6 +108,33 @@ pop that 0
 goto IF_END1
 label IF_FALSE1
 push local 0
+push constant 0
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+push this 2
+add
+push local 0
+push constant 1
+sub
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 50
+add
+push this 0
+call WichmannHill.next 1
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+goto IF_END2
+label IF_FALSE2
+push local 0
 push this 2
 add
 push this 1
@@ -118,46 +145,47 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
+label IF_END2
 push local 0
 push this 2
 add
 pop pointer 1
 push that 0
-push constant 5
+push constant 20
 lt
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
-push local 0
-push this 2
-add
-push constant 5
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-goto IF_END2
-label IF_FALSE2
-push local 0
-push this 2
-add
-pop pointer 1
-push that 0
-push constant 250
-gt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push local 0
 push this 2
 add
-push constant 250
+push constant 20
 pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
+goto IF_END3
 label IF_FALSE3
-label IF_END2
+push local 0
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 220
+gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 0
+push this 2
+add
+push constant 220
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_FALSE4
+label IF_END3
 label IF_END1
 label IF_FALSE0
 push local 0
@@ -168,6 +196,13 @@ goto WHILE_EXP0
 label WHILE_END0
 push this 3
 not
+pop this 3
+push constant 0
+return
+function Terrain.resetTrip 0
+push argument 0
+pop pointer 0
+push constant 0
 pop this 3
 push constant 0
 return
@@ -361,6 +396,123 @@ push constant 10
 add
 call Screen.drawLine 4
 pop temp 0
+push constant 0
+return
+function Terrain.drawFlag 0
+push argument 0
+pop pointer 0
+push this 3
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 68
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 68
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 10
+sub
+call Screen.drawLine 4
+pop temp 0
+push constant 68
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 10
+sub
+push constant 72
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 8
+sub
+call Screen.drawLine 4
+pop temp 0
+push constant 68
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 6
+sub
+push constant 72
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 8
+sub
+call Screen.drawLine 4
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push constant 420
+push constant 13
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 420
+push constant 13
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 10
+sub
+call Screen.drawLine 4
+pop temp 0
+push constant 420
+push constant 13
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 10
+sub
+push constant 424
+push constant 13
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 8
+sub
+call Screen.drawLine 4
+pop temp 0
+push constant 420
+push constant 13
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 6
+sub
+push constant 424
+push constant 13
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 8
+sub
+call Screen.drawLine 4
+pop temp 0
+label IF_END0
 push constant 0
 return
 function Terrain.getStartHeight 0

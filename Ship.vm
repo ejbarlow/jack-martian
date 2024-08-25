@@ -12,7 +12,7 @@ push constant 8
 pop this 4
 push constant 3
 pop this 5
-push constant 5
+push constant 8
 pop this 6
 push constant 1
 pop this 7
@@ -381,10 +381,20 @@ return
 function Ship.reset 0
 push argument 0
 pop pointer 0
-push constant 10
+push constant 80
+pop this 0
+push argument 1
+push constant 4
+sub
 pop this 1
 push constant 0
+pop this 2
+push constant 0
+pop this 3
+push constant 0
 pop this 10
+push constant 200
+pop this 9
 push constant 0
 return
 function Ship.hitTest 3

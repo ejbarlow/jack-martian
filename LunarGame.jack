@@ -3,9 +3,13 @@ class LunarGame {
   field Ship s;
   field boolean exit;
   field int score;
+  field String lblScore;
+  field String lblFuel;
 
   constructor LunarGame new() {
     let exit = false;
+    let lblScore = " Score: ";
+    let lblFuel = " Fuel: ";
     return this;
   }
 
@@ -73,16 +77,19 @@ class LunarGame {
     do t.draw();
     do s.update(keyCode);
     if (s.getHitFlag() = true) {
-      do s.reset();
+      do t.resetTrip();
       do t.newHeights();
+      do s.reset(t.getStartHeight());
+      let score = 0;
     } else {
       do s.draw(false);
+      do t.drawFlag();
     }
     do Output.moveCursor(22, 1);
-    do Output.printString("Score: ");
+    do Output.printString(lblScore);
     do Output.printInt(score);
     do Output.moveCursor(22, 20);
-    do Output.printString("Fuel: ");
+    do Output.printString(lblFuel);
     do Output.printInt(s.getFuel());
     do Sys.wait(100);
     return;

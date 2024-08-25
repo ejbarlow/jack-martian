@@ -21,7 +21,7 @@ class Ship {
     let y = startY - 4;
     let size = 8;
     let grav = 3;
-    let thrust = 5;
+    let thrust = 8;
     let friction = 1;
     let i = 0;
     let hitFlag = false;
@@ -134,9 +134,13 @@ class Ship {
     return hitFlag;
   }
 
-  method void reset() {
-      let y = 10;
+  method void reset(int spawnY) {
+      let x = 80;
+      let y = spawnY - 4;
+      let vX = 0;
+      let vY = 0;
       let hitFlag = false;
+      let fuel = 200;
       return;
   }
 
