@@ -82,6 +82,19 @@ class Ship {
     let y = y + (vY/20);
     let x = x + (vX/20);
 
+    if (x < 4) {
+      let x = 4;
+      let vX = 0;
+    }
+    if (x > 507) {
+      let x = 507;
+      let vX = 0;
+    }
+    if (y < 4) {
+      let y = 4;
+      let vY = 0;
+    }
+
     do hitTest();
 
     return;
@@ -114,6 +127,7 @@ class Ship {
     do Screen.setColor(false);
     if (thrustDir = 1) {
       let tX = x + len;
+      if (tX > 507) { let tX = 507; }
       do Screen.drawLine(x, y, tX, tY + rand);
       do Screen.drawLine(x, y, tX, tY - rand);
     }
@@ -124,6 +138,7 @@ class Ship {
     }
     if (thrustDir = 3) {
       let tX = x - len;
+      if (tX < 0) { let tX = 0; }
       do Screen.drawLine(x, y, tX, tY + rand);
       do Screen.drawLine(x, y, tX, tY - rand);
     }
@@ -161,6 +176,7 @@ class Ship {
           } else {
             if (vY > 0) {
               let vY = 0;
+              let vX = 0;
               do game.score();
             }
           }
@@ -205,6 +221,9 @@ class Ship {
     if (thrustDir > 0) {
       do drawThrust(thrustDir);
     }
+    do Screen.setColor(~col);
+    do Screen.drawCircle(x, y, size/4);
+    do Screen.setColor(col);
     return;
   }
 

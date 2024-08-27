@@ -235,6 +235,39 @@ push constant 20
 call Math.divide 2
 add
 pop this 0
+push this 0
+push constant 4
+lt
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push constant 4
+pop this 0
+push constant 0
+pop this 2
+label IF_FALSE12
+push this 0
+push constant 507
+gt
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
+push constant 507
+pop this 0
+push constant 0
+pop this 2
+label IF_FALSE13
+push this 1
+push constant 4
+lt
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
+push constant 4
+pop this 1
+push constant 0
+pop this 3
+label IF_FALSE14
 push pointer 0
 call Ship.hitTest 1
 pop temp 0
@@ -300,6 +333,15 @@ push this 0
 push local 2
 add
 pop local 0
+push local 0
+push constant 507
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 507
+pop local 0
+label IF_FALSE2
 push this 0
 push this 1
 push local 0
@@ -320,9 +362,9 @@ label IF_FALSE1
 push this 11
 push constant 2
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push this 1
 push local 2
 add
@@ -343,17 +385,26 @@ sub
 push local 1
 call Screen.drawLine 4
 pop temp 0
-label IF_FALSE2
+label IF_FALSE3
 push this 11
 push constant 3
 eq
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
 push this 0
 push local 2
 sub
 pop local 0
+push local 0
+push constant 0
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+pop local 0
+label IF_FALSE5
 push this 0
 push this 1
 push local 0
@@ -370,7 +421,7 @@ push local 3
 sub
 call Screen.drawLine 4
 pop temp 0
-label IF_FALSE3
+label IF_FALSE4
 push constant 0
 return
 function Ship.getHitFlag 0
@@ -484,6 +535,8 @@ goto IF_FALSE3
 label IF_TRUE3
 push constant 0
 pop this 3
+push constant 0
+pop this 2
 push this 14
 call LunarGame.score 1
 pop temp 0
@@ -584,6 +637,20 @@ push this 11
 call Ship.drawThrust 2
 pop temp 0
 label IF_FALSE0
+push argument 1
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 4
+push constant 4
+call Math.divide 2
+call Screen.drawCircle 3
+pop temp 0
+push argument 1
+call Screen.setColor 1
+pop temp 0
 push constant 0
 return
 function Ship.dispose 0

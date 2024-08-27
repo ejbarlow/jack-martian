@@ -34,7 +34,7 @@ class LunarGame {
     let t = Terrain.new(seed);
     let s = Ship.new(t.getStartHeight(), this);
     do Screen.setColor(true);
-    do Screen.drawRectangle(0, 0, 511, 255);
+    do Screen.drawRectangle(0, 0, 511, 239);
     do t.draw();
     return;
   }
@@ -73,7 +73,7 @@ class LunarGame {
 
   method void loop(char keyCode) {
     do Screen.setColor(true);
-    do Screen.drawRectangle(0, 0, 511, 255);
+    do Screen.drawRectangle(0, 0, 511, 239);
     do t.draw();
     do s.update(keyCode);
     if (s.getHitFlag() = true) {
@@ -85,6 +85,8 @@ class LunarGame {
       do s.draw(false);
       do t.drawFlag();
     }
+    do Screen.setColor(false);
+    do Screen.drawRectangle(0, 239, 511, 255);
     do Output.moveCursor(22, 1);
     do Output.printString(lblScore);
     do Output.printInt(score);
