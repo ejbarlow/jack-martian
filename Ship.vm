@@ -1,38 +1,41 @@
 function Ship.new 1
-push constant 15
+push constant 16
 call Memory.alloc 1
 pop pointer 0
 push constant 80
-pop this 0
+pop this 3
 push argument 0
 push constant 4
 sub
-pop this 1
-push constant 8
 pop this 4
-push constant 3
-pop this 5
 push constant 8
-pop this 6
-push constant 1
 pop this 7
-push constant 0
-pop local 0
+push constant 200
+pop this 9
 push constant 0
 pop this 10
+push constant 0
+not
+pop this 11
+push argument 1
+pop this 15
+push constant 3
+pop this 0
+push constant 8
+pop this 1
+push constant 1
+pop this 2
 push constant 23
 push constant 7666
 push constant 489
 call WichmannHill.new 3
-pop this 13
-push argument 1
 pop this 14
-push constant 200
-pop this 9
-push this 13
-push constant 2
+push this 14
+push constant 3
 call WichmannHill.setMax 2
 pop temp 0
+push constant 0
+pop local 0
 push constant 16
 call Array.new 1
 pop this 8
@@ -78,7 +81,7 @@ function Ship.update 0
 push argument 0
 pop pointer 0
 push constant 0
-pop this 11
+pop this 12
 push argument 1
 push constant 131
 eq
@@ -92,12 +95,12 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 2
-pop this 11
-push this 3
+pop this 12
 push this 6
+push this 1
 sub
-pop this 3
-push this 3
+pop this 6
+push this 6
 push constant 100
 neg
 lt
@@ -106,7 +109,7 @@ goto IF_FALSE2
 label IF_TRUE2
 push constant 100
 neg
-pop this 3
+pop this 6
 label IF_FALSE2
 push this 9
 push constant 1
@@ -115,39 +118,39 @@ pop this 9
 label IF_FALSE1
 goto IF_END0
 label IF_FALSE0
-push this 3
-push this 5
+push this 6
+push this 0
 add
-pop this 3
-push this 3
+pop this 6
+push this 6
 push constant 100
 gt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 100
-pop this 3
+pop this 6
 label IF_FALSE3
 label IF_END0
-push argument 1
-push constant 130
-eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
 push this 9
 push constant 0
 gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push argument 1
+push constant 130
+eq
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
 push constant 1
-pop this 11
-push this 2
-push this 6
+pop this 12
+push this 5
+push this 1
 sub
-pop this 2
-push this 2
+pop this 5
+push this 5
 push constant 100
 neg
 lt
@@ -156,127 +159,133 @@ goto IF_FALSE6
 label IF_TRUE6
 push constant 100
 neg
-pop this 2
+pop this 5
 label IF_FALSE6
 push this 9
 push constant 1
 sub
 pop this 9
+goto IF_END5
 label IF_FALSE5
-goto IF_END4
-label IF_FALSE4
 push argument 1
 push constant 132
 eq
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
-push this 9
-push constant 0
+push constant 3
+pop this 12
+push this 5
+push this 1
+add
+pop this 5
+push this 5
+push constant 100
 gt
 if-goto IF_TRUE8
 goto IF_FALSE8
 label IF_TRUE8
-push constant 3
-pop this 11
-push this 2
-push this 6
-add
-pop this 2
-push this 2
 push constant 100
-gt
-if-goto IF_TRUE9
-goto IF_FALSE9
-label IF_TRUE9
-push constant 100
-pop this 2
-label IF_FALSE9
+pop this 5
+label IF_FALSE8
 push this 9
 push constant 1
 sub
 pop this 9
-label IF_FALSE8
 goto IF_END7
 label IF_FALSE7
-push this 2
+push this 5
 push constant 0
 lt
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push this 5
+push this 2
+add
+pop this 5
+label IF_FALSE9
+push this 5
+push constant 0
+gt
 if-goto IF_TRUE10
 goto IF_FALSE10
 label IF_TRUE10
+push this 5
 push this 2
-push this 7
-add
-pop this 2
-label IF_FALSE10
-push this 2
-push constant 0
-gt
-if-goto IF_TRUE11
-goto IF_FALSE11
-label IF_TRUE11
-push this 2
-push this 7
 sub
-pop this 2
-label IF_FALSE11
+pop this 5
+label IF_FALSE10
 label IF_END7
-label IF_END4
-push this 1
+label IF_END5
+label IF_FALSE4
+push this 4
+push this 6
+push constant 20
+call Math.divide 2
+add
+pop this 4
 push this 3
+push this 5
 push constant 20
 call Math.divide 2
 add
-pop this 1
-push this 0
-push this 2
-push constant 20
-call Math.divide 2
-add
-pop this 0
-push this 0
-push constant 4
-lt
-if-goto IF_TRUE12
-goto IF_FALSE12
-label IF_TRUE12
-push constant 4
-pop this 0
-push constant 0
-pop this 2
-label IF_FALSE12
-push this 0
-push constant 507
-gt
-if-goto IF_TRUE13
-goto IF_FALSE13
-label IF_TRUE13
-push constant 507
-pop this 0
-push constant 0
-pop this 2
-label IF_FALSE13
-push this 1
-push constant 4
-lt
-if-goto IF_TRUE14
-goto IF_FALSE14
-label IF_TRUE14
-push constant 4
-pop this 1
-push constant 0
 pop this 3
-label IF_FALSE14
+push pointer 0
+call Ship.forceBounds 1
+pop temp 0
 push pointer 0
 call Ship.hitTest 1
 pop temp 0
+push constant 0
+return
+function Ship.forceBounds 0
+push argument 0
+pop pointer 0
+push this 3
+push constant 4
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 4
+pop this 3
+push constant 0
+pop this 5
+label IF_FALSE0
+push this 3
+push constant 507
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 507
+pop this 3
+push constant 0
+pop this 5
+label IF_FALSE1
+push this 4
+push constant 4
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 4
+pop this 4
+push constant 0
+pop this 6
+label IF_FALSE2
 push constant 0
 return
 function Ship.getFuel 0
 push argument 0
 pop pointer 0
 push this 9
+return
+function Ship.getLanded 0
+push argument 0
+pop pointer 0
+push this 11
 return
 function Ship.addFuel 0
 push argument 0
@@ -299,37 +308,37 @@ return
 function Ship.drawThrust 4
 push argument 0
 pop pointer 0
-push this 0
+push this 3
 pop local 0
-push this 1
+push this 4
 pop local 1
-push this 12
+push this 13
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push constant 8
+push constant 10
 pop local 2
 goto IF_END0
 label IF_FALSE0
-push constant 10
+push constant 12
 pop local 2
 label IF_END0
-push this 12
-not
-pop this 12
 push this 13
+not
+pop this 13
+push this 14
 call WichmannHill.next 1
 pop local 3
 push constant 0
 call Screen.setColor 1
 pop temp 0
-push this 11
+push this 12
 push constant 1
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 0
+push this 3
 push local 2
 add
 pop local 0
@@ -342,57 +351,65 @@ label IF_TRUE2
 push constant 507
 pop local 0
 label IF_FALSE2
-push this 0
-push this 1
+push this 3
+push this 4
 push local 0
 push local 1
+push constant 2
+add
 push local 3
 add
 call Screen.drawLine 4
 pop temp 0
-push this 0
-push this 1
+push this 3
+push this 4
 push local 0
 push local 1
+push constant 2
+sub
 push local 3
 sub
 call Screen.drawLine 4
 pop temp 0
 label IF_FALSE1
-push this 11
+push this 12
 push constant 2
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 1
+push this 4
 push local 2
 add
 pop local 1
-push this 0
-push this 1
+push this 3
+push this 4
 push local 0
+push constant 2
+add
 push local 3
 add
 push local 1
 call Screen.drawLine 4
 pop temp 0
-push this 0
-push this 1
+push this 3
+push this 4
 push local 0
+push constant 2
+sub
 push local 3
 sub
 push local 1
 call Screen.drawLine 4
 pop temp 0
 label IF_FALSE3
-push this 11
+push this 12
 push constant 3
 eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push this 0
+push this 3
 push local 2
 sub
 pop local 0
@@ -405,18 +422,22 @@ label IF_TRUE5
 push constant 0
 pop local 0
 label IF_FALSE5
-push this 0
-push this 1
+push this 3
+push this 4
 push local 0
 push local 1
+push constant 2
+add
 push local 3
 add
 call Screen.drawLine 4
 pop temp 0
-push this 0
-push this 1
+push this 3
+push this 4
 push local 0
 push local 1
+push constant 2
+sub
 push local 3
 sub
 call Screen.drawLine 4
@@ -433,15 +454,15 @@ function Ship.reset 0
 push argument 0
 pop pointer 0
 push constant 80
-pop this 0
+pop this 3
 push argument 1
 push constant 4
 sub
-pop this 1
+pop this 4
 push constant 0
-pop this 2
+pop this 5
 push constant 0
-pop this 3
+pop this 6
 push constant 0
 pop this 10
 push constant 200
@@ -451,24 +472,26 @@ return
 function Ship.hitTest 3
 push argument 0
 pop pointer 0
-push this 0
-push this 4
+push this 3
+push this 7
 push constant 2
 call Math.divide 2
 sub
 pop local 0
-push this 0
-push this 4
+push this 3
+push this 7
 push constant 2
 call Math.divide 2
 add
 pop local 1
-push this 1
 push this 4
+push this 7
 push constant 2
 call Math.divide 2
 add
 pop local 2
+push constant 0
+pop this 11
 label WHILE_EXP0
 push local 0
 push local 1
@@ -485,18 +508,18 @@ eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 0
+push this 3
 push constant 64
 gt
-push this 0
+push this 3
 push constant 96
 lt
 and
 not
-push this 0
+push this 3
 push constant 416
 gt
-push this 0
+push this 3
 push constant 448
 lt
 and
@@ -513,7 +536,7 @@ not
 return
 goto IF_END1
 label IF_FALSE1
-push this 3
+push this 6
 push constant 50
 gt
 if-goto IF_TRUE2
@@ -527,18 +550,21 @@ not
 return
 goto IF_END2
 label IF_FALSE2
-push this 3
+push this 6
 push constant 0
 gt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 0
-pop this 3
+pop this 6
 push constant 0
-pop this 2
-push this 14
-call LunarGame.score 1
+pop this 5
+push constant 0
+not
+pop this 11
+push this 15
+call MarsGame.score 1
 pop temp 0
 label IF_FALSE3
 label IF_END2
@@ -557,12 +583,17 @@ return
 function Ship.getVY 0
 push argument 0
 pop pointer 0
-push this 3
+push this 6
+return
+function Ship.getVX 0
+push argument 0
+pop pointer 0
+push this 5
 return
 function Ship.getX 0
 push argument 0
 pop pointer 0
-push this 0
+push this 3
 return
 function Ship.getPixel 4
 push argument 0
@@ -619,21 +650,21 @@ pop pointer 0
 push argument 1
 call Screen.setColor 1
 pop temp 0
-push this 0
-push this 1
+push this 3
 push this 4
+push this 7
 push constant 2
 call Math.divide 2
 call Screen.drawCircle 3
 pop temp 0
-push this 11
+push this 12
 push constant 0
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push pointer 0
-push this 11
+push this 12
 call Ship.drawThrust 2
 pop temp 0
 label IF_FALSE0
@@ -641,9 +672,9 @@ push argument 1
 not
 call Screen.setColor 1
 pop temp 0
-push this 0
-push this 1
+push this 3
 push this 4
+push this 7
 push constant 4
 call Math.divide 2
 call Screen.drawCircle 3

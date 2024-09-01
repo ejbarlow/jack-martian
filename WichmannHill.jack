@@ -55,12 +55,9 @@ class WichmannHill {
 
   /** Modulo function */
   function int mod(int x, int y) {
-    var int count;
-    let count = x;
-    while (count - y > -1) {
-      let count = count - y;
-    }
-    return count;
+    var int div;
+    let div = x / y;
+    return x - (y * div);
   }
 
   /** Standard dispose */

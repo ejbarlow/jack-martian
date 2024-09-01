@@ -269,7 +269,7 @@ push this 2
 add
 pop pointer 1
 push that 0
-push constant 2
+push constant 3
 add
 push local 0
 push constant 1
@@ -285,7 +285,7 @@ push this 2
 add
 pop pointer 1
 push that 0
-push constant 2
+push constant 3
 add
 call Screen.drawLine 4
 pop temp 0
@@ -297,7 +297,7 @@ push this 2
 add
 pop pointer 1
 push that 0
-push constant 4
+push constant 6
 add
 push local 0
 push constant 1
@@ -313,7 +313,63 @@ push this 2
 add
 pop pointer 1
 push that 0
-push constant 4
+push constant 6
+add
+call Screen.drawLine 4
+pop temp 0
+push local 0
+push constant 32
+call Math.multiply 2
+push local 0
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 9
+add
+push local 0
+push constant 1
+add
+push constant 32
+call Math.multiply 2
+push constant 1
+sub
+push local 0
+push constant 1
+add
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 9
+add
+call Screen.drawLine 4
+pop temp 0
+push local 0
+push constant 32
+call Math.multiply 2
+push local 0
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 12
+add
+push local 0
+push constant 1
+add
+push constant 32
+call Math.multiply 2
+push constant 1
+sub
+push local 0
+push constant 1
+add
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 12
 add
 call Screen.drawLine 4
 pop temp 0
@@ -346,37 +402,23 @@ pop pointer 1
 push that 0
 call Screen.drawLine 4
 pop temp 0
-push constant 64
+push constant 65
 push constant 2
 push this 2
 add
 pop pointer 1
 push that 0
-push constant 10
+push constant 2
 add
-push constant 96
+push constant 95
 push constant 2
 push this 2
 add
 pop pointer 1
 push that 0
-call Screen.drawLine 4
-pop temp 0
-push constant 64
-push constant 2
-push this 2
+push constant 12
 add
-pop pointer 1
-push that 0
-push constant 96
-push constant 2
-push this 2
-add
-pop pointer 1
-push that 0
-push constant 10
-add
-call Screen.drawLine 4
+call Screen.drawRectangle 4
 pop temp 0
 push constant 416
 push constant 13
@@ -392,37 +434,74 @@ pop pointer 1
 push that 0
 call Screen.drawLine 4
 pop temp 0
-push constant 416
+push constant 417
 push constant 13
 push this 2
 add
 pop pointer 1
 push that 0
-push constant 10
+push constant 2
 add
-push constant 448
+push constant 447
 push constant 13
 push this 2
 add
 pop pointer 1
 push that 0
-call Screen.drawLine 4
+push constant 12
+add
+call Screen.drawRectangle 4
 pop temp 0
-push constant 416
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 88
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 9
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push constant 440
 push constant 13
 push this 2
 add
 pop pointer 1
 push that 0
-push constant 448
+push constant 9
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push constant 88
+push constant 2
+push this 2
+add
+pop pointer 1
+push that 0
+push constant 9
+add
+push constant 2
+call Screen.drawCircle 3
+pop temp 0
+push constant 440
 push constant 13
 push this 2
 add
 pop pointer 1
 push that 0
-push constant 10
+push constant 9
 add
-call Screen.drawLine 4
+push constant 2
+call Screen.drawCircle 3
 pop temp 0
 push constant 0
 return

@@ -1,0 +1,188 @@
+/**
+ * Main class for running the game and managing state etc.
+ */ 
+
+class MarsGame {
+  field Terrain t;
+  field Ship s;
+  field UI ui;
+  field boolean exit;
+  field int score;
+  field int hi;
+  field int seed;
+
+  // game text
+  field String title;
+  field String instr;
+  field String instrA;
+  field String instrB;
+  field String instrRetry;
+  field String gameOver;
+  field String danger;
+  field String record;
+  field String padA;
+  field String padB;
+  field String lblScore;
+  field String lblFuel;
+  field String lblHi;
+
+  constructor MarsGame new() {
+    do setText();
+    let exit = false;
+    return this;
+  }
+
+  method void setText() {
+    let title =       "Martian Lander";
+    let instr =       "Press SPACE to start";
+    let instrA =      "Use up/left/right to reach the destination for fuel and points.";
+    let instrB =      "Keep speed out of the marked zone to prevent crashing.";
+    let gameOver =    " GAME OVER ";
+    let danger =      " ! DANGER ! ";
+    let record =      " New record! ";
+    let padA =        "           ";
+    let padB =        "                          ";
+    let instrRetry =  " Press SPACE to try again ";
+    let lblScore =    " Score: ";
+    let lblFuel =     " Fuel";
+    let lblHi =       " Best: ";
+    return;
+  }
+
+  method void dispose() {
+    do t.dispose();
+    do s.dispose();
+    do ui.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+
+  method void init() {
+    do titleScreen();
+    let t = Terrain.new(seed);
+    let s = Ship.new(t.getStartHeight(), this);
+    let ui = UI.new();
+    do Screen.setColor(true);
+    do Screen.drawRectangle(0, 0, 511, 239);
+    do t.draw();
+    return;
+  }
+
+  method void titleScreen() {
+    var char key;
+    do Output.moveCursor(10, 22);
+    do Output.printString(title);
+    do Output.moveCursor(12, 1);
+    do Output.printString(instrA);
+    do Output.moveCursor(14, 6);
+    do Output.printString(instrB);
+    do Output.moveCursor(16, 18);
+    do Output.printString(instr);
+
+    while (~(key = 32)) {
+      let key = Keyboard.keyPressed();
+      let seed = seed + 1;
+      if (seed > 30000) { let seed = 0 ;}
+    }
+    return;
+  }
+
+  method void run() {
+    var char key;
+    while (~(exit)) {
+      let key = Keyboard.keyPressed();
+      if (key = 140) {
+        let exit = true;
+      } else {
+        do loop(key);
+      }
+    }
+    return;
+  }
+
+  method void score() {
+    var int sX;
+    let sX = s.getX();
+    if (~t.isReturnTrip()) {
+      if ((sX > 64) & (sX < 96)) {
+        do t.newHeights();
+        do s.addFuel(50);
+        let score = score + 1;
+      }
+    } else {
+      if ((sX > 416) & (sX < 448)) {
+        do t.newHeights();
+        do s.addFuel(50);
+        let score = score + 1;
+      }
+    }
+    return;
+  }
+
+  method void loop(char keyCode) {
+    do Screen.setColor(true);
+    do Screen.drawRectangle(0, 0, 511, 239);
+    do t.draw();
+    do s.update(keyCode);
+    if (s.getHitFlag() = true) {
+      do endGame();
+    } else {
+      if ((s.getLanded() = true) & (s.getFuel() < 1)) {
+        do endGame();
+      }
+      do s.draw(false);
+      do t.drawFlag();
+    }
+    do Screen.setColor(false);
+    do Screen.drawRectangle(0, 239, 511, 255);
+    do Output.moveCursor(22, 1);
+    do Output.printString(lblScore);
+    do Output.printInt(score);
+    do Output.moveCursor(22, 20);
+    do Output.printString(lblFuel);
+    do Output.moveCursor(22, 50);
+    do Output.printString(lblHi);
+    do Output.printInt(hi);
+    do ui.draw(s.getVX(), s.getVY(), s.getFuel());
+    if (s.getVY() > 50) {
+      do Output.moveCursor(3, 23);
+      do Output.printString(danger);
+    }
+    do Sys.wait(100);
+    return;
+  }
+
+  method void endGame() {
+    var char key;
+
+    do Output.moveCursor(9, 26);
+    do Output.printString(padA);
+    do Output.moveCursor(10, 26);
+    do Output.printString(gameOver);
+    do Output.moveCursor(11, 18);
+    do Output.printString(padB);
+    do Output.moveCursor(12, 18);
+    do Output.printString(instrRetry);
+    do Output.moveCursor(13, 18);
+    do Output.printString(padB);
+
+    if (score > hi) {
+      let hi = score;
+      do Output.moveCursor(20, 50);
+      do Output.printString(record);
+      do Output.moveCursor(22, 50);
+      do Output.printString(lblHi);
+      do Output.printInt(hi);
+    }
+
+    while (~(key = 32)) {
+      let key = Keyboard.keyPressed();
+    }
+
+    do t.resetTrip();
+    do t.newHeights();
+    do s.reset(t.getStartHeight());
+    let score = 0;
+    return;
+  }
+}

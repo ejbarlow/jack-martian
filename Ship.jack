@@ -1,35 +1,50 @@
+/**
+ * Ship and movement. Visual collision detection based
+ * on rendered terrain pixels.
+ */
+
 class Ship {
 
-  field int x, y;       // screen position
-  field int vX, vY;     // velocities
-  field int size;       // square width/height
-  field int grav;       // gravity strength
-  field int thrust;     // thrust strength
-  field int friction;   // horizontal friction strength
-  field Array bitMask;  // for checking screen px for hit detection
-  field int fuel;
-  field bool hitFlag;
-  field int thrustDir;
-  field bool thrustLen;
-  field WichmannHill rng;
-  field LunarGame game;
+  field int grav, thrust, friction;  // forces
 
-  constructor Ship new(int startY, LunarGame g) {
-    var int i;
+  field int x, y;         // screen position
+  field int vX, vY;       // velocities
+  field int size;         // ship diameter
 
+  field Array bitMask;    // for checking screen px for hit detection
+  field int fuel;         // remaining fuel
+  field bool hitFlag;     // currently hitting terrain?
+  field bool landed;      // currently landed safely
+
+  field int thrustDir;    // for
+  field bool thrustLen;   // drawing
+  field WichmannHill rng; // thrust
+
+  field MarsGame game;   // to call methods in the game class
+
+  constructor Ship new(int startY, MarsGame g) {
+    var int i; // for setting up the bit mask array
+
+    // ship properties
     let x = 80;
     let y = startY - 4;
     let size = 8;
+    let fuel = 200;
+    let hitFlag = false;
+    let landed = true;
+    let game = g;
+
+    // physics properties
     let grav = 3;
     let thrust = 8;
     let friction = 1;
-    let i = 0;
-    let hitFlag = false;
-    let rng = WichmannHill.new(23, 7666, 489);
-    let game = g;
-    let fuel = 200;
-    do rng.setMax(2);
 
+    // init rng for drawing thrust
+    let rng = WichmannHill.new(23, 7666, 489);
+    do rng.setMax(3);
+
+    // init and populate bit mask array
+    let i = 0;
     let bitMask = Array.new(16);
     let bitMask[0] = 1;
     while (i < 15) {
@@ -40,41 +55,40 @@ class Ship {
     return this;
   }
 
+  /** Update ship position based on forces and player input. */
   method void update(char key) {
     let thrustDir = 0;
-    if (key = 131) {
+    if (key = 131) {                        // upward thrust
       if (fuel > 0) {
         let thrustDir = 2;
         let vY = vY - thrust;
         if (vY < -100) { let vY = -100; }
         let fuel = fuel - 1;
       }
-    } else {
+    } else {                                // gravity
       let vY = vY + grav;
       if (vY > 100) { let vY = 100; }
     }
 
-    if (key = 130) {
-      if (fuel > 0) {
+    if (fuel > 0) {
+      if (key = 130) {                      // left thrust
         let thrustDir = 1;
         let vX = vX - thrust;
         if (vX < -100) { let vX = -100; }
         let fuel = fuel - 1;
-      }
-    } else {
-      if (key = 132) { 
-        if (fuel > 0) {
+      } else {
+        if (key = 132) {                    // right thrust
           let thrustDir = 3;
           let vX = vX + thrust;
           if (vX > 100) { let vX = 100; }
           let fuel = fuel - 1;
-        }
-      } else {
-        if (vX < 0) {
-          let vX = vX + friction;
-        } 
-        if (vX > 0) {
-          let vX = vX - friction;
+        } else {                            // friction slows lateral velocity
+          if (vX < 0) {
+            let vX = vX + friction;
+          } 
+          if (vX > 0) {
+            let vX = vX - friction;
+          }
         }
       }
     }
@@ -82,6 +96,13 @@ class Ship {
     let y = y + (vY/20);
     let x = x + (vX/20);
 
+    do forceBounds();   // keep on screen
+    do hitTest();       // check updated position for collision
+
+    return;
+  }
+
+  method void forceBounds() {
     if (x < 4) {
       let x = 4;
       let vX = 0;
@@ -94,23 +115,26 @@ class Ship {
       let y = 4;
       let vY = 0;
     }
-
-    do hitTest();
-
     return;
   }
 
   method int getFuel() {
     return fuel;
   }
-   method void addFuel(int amount) {
-     let fuel = fuel + amount;
-     if (fuel > 200) {
-       let fuel = 200;
-     }
-     return;
-   }
 
+  method bool getLanded() {
+    return landed;
+  }
+
+  method void addFuel(int amount) {
+    let fuel = fuel + amount;
+    if (fuel > 200) {
+      let fuel = 200;
+    }
+    return;
+  }
+
+  /** Draw thrust lines. */
   method void drawThrust(int dir) {
     var int tX, tY;
     var int len;
@@ -118,9 +142,9 @@ class Ship {
     let tX = x;
     let tY = y;
     if (thrustLen) {
-      let len = 8;
-    } else {
       let len = 10;
+    } else {
+      let len = 12;
     }
     let thrustLen = ~thrustLen;
     let rand = rng.next();
@@ -128,19 +152,19 @@ class Ship {
     if (thrustDir = 1) {
       let tX = x + len;
       if (tX > 507) { let tX = 507; }
-      do Screen.drawLine(x, y, tX, tY + rand);
-      do Screen.drawLine(x, y, tX, tY - rand);
+      do Screen.drawLine(x, y, tX, tY + 2 + rand);
+      do Screen.drawLine(x, y, tX, tY - 2 - rand);
     }
     if (thrustDir = 2) {
       let tY = y + len;
-      do Screen.drawLine(x, y, tX + rand, tY);
-      do Screen.drawLine(x, y, tX - rand, tY);
+      do Screen.drawLine(x, y, tX + 2 + rand, tY);
+      do Screen.drawLine(x, y, tX - 2 - rand, tY);
     }
     if (thrustDir = 3) {
       let tX = x - len;
       if (tX < 0) { let tX = 0; }
-      do Screen.drawLine(x, y, tX, tY + rand);
-      do Screen.drawLine(x, y, tX, tY - rand);
+      do Screen.drawLine(x, y, tX, tY + 2 + rand);
+      do Screen.drawLine(x, y, tX, tY - 2 - rand);
     }
     return;
   }
@@ -149,6 +173,7 @@ class Ship {
     return hitFlag;
   }
 
+  /** Reset properties to initial values for new game. */
   method void reset(int spawnY) {
       let x = 80;
       let y = spawnY - 4;
@@ -159,24 +184,27 @@ class Ship {
       return;
   }
 
+  /** Check bottom row of pixels for collision */
   method bool hitTest() {
     var int x1, x2, y1;
-    let x1 = x - (size/2);
-    let x2 = x + (size/2);
-    let y1 = y + (size/2);
-    while (x1 < x2) {
-      if (getPixel(x1, y1) = true) {
-        if (~((x > 64) & (x < 96)) & ~((x > 416) & (x < 448))) {
+    let x1 = x - (size/2); // left x
+    let x2 = x + (size/2); // right x
+    let y1 = y + (size/2); // bottom y
+    let landed = false;
+    while (x1 < x2) {                                             // for each pixel...
+      if (getPixel(x1, y1) = true) {                              // if it's white...
+        if (~((x > 64) & (x < 96)) & ~((x > 416) & (x < 448))) {  // and you're outside the landing area
           let hitFlag = true;
           return true;
-        } else {
-          if (vY > 50) {
+        } else {                  // otherwise, you're hitting a landing pad.
+          if (vY > 50) {          // if you're landing to quickly, crash.
             let hitFlag = true;
             return true;
-          } else {
+          } else {                // otherwise, kill momentum and (potentially) score.
             if (vY > 0) {
               let vY = 0;
               let vX = 0;
+              let landed = true;
               do game.score();
             }
           }
@@ -184,7 +212,7 @@ class Ship {
       }
       let x1 = x1 + 1;
     }
-    let hitFlag = false;
+    let hitFlag = false;         // no collision detected
     return false;
   }
 
@@ -192,10 +220,15 @@ class Ship {
     return vY;
   }
 
+  method int getVX() {
+    return vX;
+  }
+
   method int getX() {
     return x;
   }
 
+  /** Check the value of a specific pixel using bit-mask */
   method bool getPixel(int pX, int pY) {
     var int addr;
     var int word;
@@ -205,7 +238,7 @@ class Ship {
     let result = true;
     let addr = 16384 + (32*pY) + (pX/16);
     let word = Memory.peek(addr);
-    let word = ~word;
+    let word = ~word;   // negate as we're checking for white pixels
     let m = pX / 16;
     let m = pX - (m*16);
     if (word & bitMask[m] = 0) {
@@ -214,10 +247,10 @@ class Ship {
     return result;
   }
 
+  /** Draw the ship and thrust */
   method void draw(bool col) {
     do Screen.setColor(col);
     do Screen.drawCircle(x, y, size/2);
-
     if (thrustDir > 0) {
       do drawThrust(thrustDir);
     }

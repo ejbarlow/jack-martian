@@ -123,23 +123,14 @@ push constant 0
 return
 function WichmannHill.mod 1
 push argument 0
-pop local 0
-label WHILE_EXP0
-push local 0
 push argument 1
-sub
-push constant 1
-neg
-gt
-not
-if-goto WHILE_END0
-push local 0
-push argument 1
-sub
+call Math.divide 2
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+push argument 0
+push argument 1
 push local 0
+call Math.multiply 2
+sub
 return
 function WichmannHill.dispose 0
 push argument 0
