@@ -1,0 +1,14 @@
+function Main.main 1
+call MarsGame.new 0
+pop local 0
+push local 0
+call MarsGame.init 1
+pop temp 0
+push local 0
+call MarsGame.run 1
+pop temp 0
+push local 0
+call MarsGame.dispose 1
+pop temp 0
+push constant 0
+return

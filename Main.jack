@@ -1,0 +1,10 @@
+class Main {
+  function void main() {
+    var MarsGame game;
+    let game = MarsGame.new();
+    do game.init();
+    do game.run();
+    do game.dispose();
+    return;
+  }
+}
