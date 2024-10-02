@@ -32,6 +32,7 @@ class MarsGame {
     return this;
   }
 
+  /** Define text and strings used in the program */
   method void setText() {
     let title =       "Martian Lander";
     let instr =       "Press SPACE to start";
@@ -68,6 +69,7 @@ class MarsGame {
     return;
   }
 
+  /** Show title screen text and wait for keypress */
   method void titleScreen() {
     var char key;
     do Output.moveCursor(10, 22);
@@ -87,6 +89,7 @@ class MarsGame {
     return;
   }
 
+  /** Run the main loop until quit is requested */
   method void run() {
     var char key;
     while (~(exit)) {
@@ -100,6 +103,7 @@ class MarsGame {
     return;
   }
 
+  /** Generate next 'level', add fuel and points */
   method void score() {
     var int sX;
     let sX = s.getX();
@@ -120,9 +124,13 @@ class MarsGame {
   }
 
   method void loop(char keyCode) {
+    // clear screen
     do Screen.setColor(true);
     do Screen.drawRectangle(0, 0, 511, 239);
+
+    // draw the collision enabled parts of terrain
     do t.draw();
+    // update the ship position and check for terrain collision
     do s.update(keyCode);
     if (s.getHitFlag() = true) {
       do endGame();
@@ -130,9 +138,13 @@ class MarsGame {
       if ((s.getLanded() = true) & (s.getFuel() < 1)) {
         do endGame();
       }
+      // draw the ship
       do s.draw(false);
+      // draw any other parts of terrain now collision has been handled
       do t.drawFlag();
     }
+
+    // ui and labels
     do Screen.setColor(false);
     do Screen.drawRectangle(0, 239, 511, 255);
     do Output.moveCursor(22, 1);
@@ -155,6 +167,7 @@ class MarsGame {
   method void endGame() {
     var char key;
 
+    // end game text
     do Output.moveCursor(9, 26);
     do Output.printString(padA);
     do Output.moveCursor(10, 26);
@@ -166,6 +179,7 @@ class MarsGame {
     do Output.moveCursor(13, 18);
     do Output.printString(padB);
 
+    // update high score
     if (score > hi) {
       let hi = score;
       do Output.moveCursor(20, 50);
@@ -179,6 +193,7 @@ class MarsGame {
       let key = Keyboard.keyPressed();
     }
 
+    // start a new game
     do t.resetTrip();
     do t.newHeights();
     do s.reset(t.getStartHeight());

@@ -92,6 +92,7 @@ class Terrain {
     return;
   }
 
+  /** Draw the flags (non-colliding) */
   method void drawFlag() {
     if (~rtnTrip) {
       do Screen.drawLine(68, heights[2], 68, heights[2] - 10);

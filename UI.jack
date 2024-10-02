@@ -11,6 +11,7 @@ class UI {
 
   method void draw(int sX, int sY, int fuel) {
     var int xPos, yPos;
+    // speed meter outlines
     do Screen.setColor(false);
     do Screen.drawRectangle(4, 20, 16, 122);
     do Screen.drawRectangle(20, 4, 122, 16);
@@ -18,10 +19,14 @@ class UI {
     do Screen.drawRectangle(5, 21, 15, 121);
     do Screen.drawRectangle(21, 5, 121, 15);
     do Screen.setColor(false);
+
+    // danger warning ("!")
     if (sY > 50) {
       do Output.moveCursor(11, 1);
       do Output.printChar(33);
     }
+
+    // y speed indicator
     let yPos = 71 + (sY / 2);
     if (yPos > 71) {
       do Screen.drawRectangle(7, 71, 13, yPos);
@@ -32,11 +37,11 @@ class UI {
     do Screen.drawLine(10, 21, 10, threshold);
     do Screen.drawLine(5, 121, 15, 121);
     do Screen.drawLine(5, threshold, 15, threshold);
-
     do Screen.drawLine(5, 96, 15, 106);
     do Screen.drawLine(5, 106, 15, 116);
     do Screen.drawLine(5, 116, 10, 121);
 
+    // x speed indicator
     let xPos = 71 + (sX / 2);
     if (xPos > 71) {
       do Screen.drawRectangle(71, 7, xPos, 13);
@@ -46,7 +51,6 @@ class UI {
     do Screen.drawLine(21, 5, 21, 15);
     do Screen.drawLine(21, 10, 121, 10);
     do Screen.drawLine(121, 5, 121, 15);
-
     do Screen.setColor(true);
     do Screen.drawRectangle(200, 241, 304, 253);
     do Screen.setColor(false);
